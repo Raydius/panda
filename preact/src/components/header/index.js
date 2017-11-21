@@ -10,8 +10,7 @@ export default class Header extends Component {
 				<nav>
 					<Link href="/">Home</Link>
 					<Link href="/multiply/">Multiply</Link>
-					<Link href="/profile">Me</Link>
-					<Link href="/profile/john">John</Link>
+					<Link href="/todo/">To-Do</Link>
 				</nav>
 			</header>
 		);

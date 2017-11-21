@@ -11,6 +11,8 @@ services:
     build: ./api
     networks:
       - panda-net
+    ports:
+      - "8080:8080"
   dynamo:
     image: cnadiminti/dynamodb-local:latest
     networks:

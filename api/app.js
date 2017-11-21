@@ -6,12 +6,24 @@
 
 const restify = require('restify');
 
-const list = require('./controllers/list');
-
 // create server
 const server = restify.createServer();
 
+// CORS config
+const corsMiddleware = require('restify-cors-middleware');
+
+const cors = corsMiddleware({
+    // preflightMaxAge: 5,
+    origins: ['http://localhost:5000'],
+    allowHeaders: ['API-Token'],
+    exposeHeaders: ['API-Token-Expiry']
+});
+
+server.pre(cors.preflight);
+server.use(cors.actual);
+
 // routes
+const list = require('./controllers/list');
 server.get('/', list.getList);
 
 // start listening

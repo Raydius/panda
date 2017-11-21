@@ -3,8 +3,8 @@ import { Router } from 'preact-router';
 
 import Header from './header';
 import Home from './home';
-import Profile from './profile';
 import Multiply from './multiply';
+import Todo from './todo';
 
 export default class App extends Component {
 	/** Gets fired when the route changes.
@@ -22,8 +22,7 @@ export default class App extends Component {
 				<Router onChange={this.handleRoute}>
 					<Home path="/" />
 					<Multiply path="/multiply/" />
-					<Profile path="/profile/" user="me" />
-					<Profile path="/profile/:user" />
+					<Todo path="/todo/" />
 				</Router>
 			</div>
 		);
