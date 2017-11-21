@@ -1,0 +1,12 @@
+version: '2'
+services:
+  dynamo:
+    image: cnadiminti/dynamodb-local:latest
+    volumes:
+      - ./dynamo:/dynamodb_local_db
+    ports:
+      - "8000:8000"
+    restart: always
+networks:
+  panda-net:
+    driver: bridge
