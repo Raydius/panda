@@ -2,17 +2,21 @@ version: '2'
 services:
   preact:
     build: ./preact
+    networks:
+      - panda-net
     ports:
       - "5000:5000"
     restart: always
   api:
     build: ./api
+    networks:
+      - panda-net
   dynamo:
     image: cnadiminti/dynamodb-local:latest
+    networks:
+      - panda-net
     volumes:
       - ./dynamo:/dynamodb_local_db
-    ports:
-      - "8000:8000"
     restart: always
 networks:
   panda-net:
