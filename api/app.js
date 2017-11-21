@@ -14,7 +14,7 @@ const corsMiddleware = require('restify-cors-middleware');
 
 const cors = corsMiddleware({
     // preflightMaxAge: 5,
-    origins: ['http://localhost:5000'],
+    origins: ['http://localhost:5000','http://127.0.0.1'],
     allowHeaders: ['API-Token'],
     exposeHeaders: ['API-Token-Expiry']
 });

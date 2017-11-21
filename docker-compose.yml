@@ -13,12 +13,18 @@ services:
       - panda-net
     ports:
       - "8080:8080"
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_DEFAULT_REGION
   dynamo:
     image: cnadiminti/dynamodb-local:latest
     networks:
       - panda-net
     volumes:
       - ./dynamo:/dynamodb_local_db
+    ports:
+      - "8000:8000"
     restart: always
 networks:
   panda-net:

@@ -13,6 +13,7 @@
     "aws-sdk": "^2.154.0",
     "babel-cli": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
+    "dynasty": "^0.2.8",
     "restify": "^6.3.3",
     "restify-cors-middleware": "^1.0.1"
   }
