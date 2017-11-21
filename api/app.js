@@ -9,6 +9,30 @@ const restify = require('restify');
 // create server
 const server = restify.createServer();
 
+// variable handling
+server.use(restify.plugins.acceptParser(server.acceptable));
+server.use(restify.plugins.queryParser());
+server.use(restify.plugins.bodyParser({
+    maxBodySize: 0,
+    mapParams: true,
+    mapFiles: false,
+    overrideParams: false,
+    multipartHandler: function(part) {
+        part.on('data', function(data) {
+            file_contents = data;
+        });
+    },
+    multipartFileHandler: function(part) {
+        part.on('data', function(data) {
+            file_contents = data;
+        });
+    },
+    keepExtensions: false,
+    //uploadDir: os.tmpdir(),
+    multiples: true,
+    hash: 'sha1'
+}));
+
 // CORS config
 const corsMiddleware = require('restify-cors-middleware');
 
@@ -24,7 +48,13 @@ server.use(cors.actual);
 
 // routes
 const list = require('./controllers/list');
+
+// get full list of tasks
 server.get('/', list.getList);
+// add a new task
+server.post('/addTask', list.addTask);
+
+
 
 // start listening
 server.listen(8080, function() {

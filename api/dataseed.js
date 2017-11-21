@@ -2,7 +2,7 @@ var AWS = require('aws-sdk');
 AWS.config.update({
     region:'us-east-1'
 });
-
+/*
 var dynamoose = require('dynamoose');
 
 dynamoose.local();
@@ -15,4 +15,4 @@ var apples = new List({
     done: false
 });
 
-apples.save();
+apples.save();*/
