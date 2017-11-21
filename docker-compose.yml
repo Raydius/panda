@@ -1,5 +1,12 @@
 version: '2'
 services:
+  preact:
+    build: ./preact
+    ports:
+      - "5000:5000"
+    restart: always
+  api:
+    build: ./api
   dynamo:
     image: cnadiminti/dynamodb-local:latest
     volumes:
