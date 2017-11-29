@@ -115,6 +115,7 @@ module.exports = {
 		]
 	},
 	plugins: ([
+		new webpack.HotModuleReplacementPlugin(),
 		new webpack.NoEmitOnErrorsPlugin(),
 		new ExtractTextPlugin({
 			filename: 'style.css',
@@ -159,7 +160,7 @@ module.exports = {
 				if_return: true,
 				join_vars: true,
 				cascade: true,
-				drop_console: true
+				drop_console: false
 			}
 		}),
 
@@ -195,13 +196,15 @@ module.exports = {
 	devtool: ENV==='production' ? 'source-map' : 'cheap-module-eval-source-map',
 
 	devServer: {
-		port: process.env.PORT || 8080,
-		host: 'localhost',
+		port: process.env.PORT || 5000,
+		host: '0.0.0.0',
+		hot: true,
 		publicPath: '/',
 		contentBase: './src',
 		historyApiFallback: true,
-		open: true,
-		openPage: '',
+		open: false,
+		//openPage: '',
+		disableHostCheck: true,
 		proxy: {
 			// OPTIONAL: proxy configuration:
 			// '/optional-prefix/**': { // path pattern to rewrite

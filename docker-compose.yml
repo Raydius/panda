@@ -2,8 +2,11 @@ version: '2'
 services:
   preact:
     build: ./preact
+    command: ["npm","run","dev"]
     networks:
       - panda-net
+    volumes:
+      - ./preact/src:/usr/src/app/src
     ports:
       - "5000:5000"
     restart: always

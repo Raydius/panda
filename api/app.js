@@ -9,7 +9,9 @@ const restify = require('restify');
 // create server
 const server = restify.createServer();
 
-// variable handling
+const list = require('./controllers/list');
+
+// request handling
 server.use(restify.plugins.acceptParser(server.acceptable));
 server.use(restify.plugins.queryParser());
 server.use(restify.plugins.bodyParser({
@@ -47,13 +49,10 @@ server.pre(cors.preflight);
 server.use(cors.actual);
 
 // routes
-const list = require('./controllers/list');
-
-// get full list of tasks
 server.get('/', list.getList);
-// add a new task
-server.post('/addTask', list.addTask);
-
+server.post('/task/add', list.addTask);
+server.del('/task/:short', list.delTask);
+server.post('/task/:short/done', list.doneTask);
 
 
 // start listening

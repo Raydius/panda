@@ -32,7 +32,14 @@ exports.getList = function(req, res, next) {
 // method to add a single task
 exports.addTask = function(req, res, next) {
 
+    // get desc from form body element "short"
     let shortDesc = req.body.short;
+
+    // description has to be at least 1 character
+    if(shortDesc.length < 1) {
+        next();
+    }
+
     List.insert({ short: shortDesc }).then(function(resp) {
        res.send(resp);
        next();
@@ -46,8 +53,7 @@ exports.addTask = function(req, res, next) {
 // method to delete a single task
 exports.delTask = function(req, res, next) {
 
-    let taskId = req.params.taskId;
-    let hash = req.body.hash;
+    let short = req.params.short;
 
     List.remove(hash).then(function(resp) {
         res.send(resp);
@@ -56,5 +62,11 @@ exports.delTask = function(req, res, next) {
         res.send(resp);
         next();
     });
+
+};
+
+exports.doneTask = function(req, res, next) {
+
+
 
 };
