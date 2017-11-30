@@ -51,7 +51,7 @@ server.use(cors.actual);
 // routes
 server.get('/', list.getList);
 server.post('/task/add', list.addTask);
-server.del('/task/:short', list.delTask);
+server.post('/task/clear', list.clearTasks);
 server.post('/task/:short/done', list.doneTask);
 
 

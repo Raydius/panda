@@ -51,22 +51,74 @@ exports.addTask = function(req, res, next) {
 };
 
 // method to delete a single task
-exports.delTask = function(req, res, next) {
+exports.clearTasks = function(req, res, next) {
 
-    let short = req.params.short;
+    let doneArray = req.body.doneArray;
+    let remaining = doneArray.length;
 
-    List.remove(hash).then(function(resp) {
-        res.send(resp);
-        next();
-    }).catch(function(err) {
-        res.send(resp);
-        next();
+    // create a promise function that will resolve when a record is removed from the dynamoDB
+    let removeOne = function(shortName) {
+
+        return new Promise(function (resolve, reject) {
+            List.remove(shortName).then(function(resp) {
+                resolve(resp);
+            }).catch(function(err) {
+                // handle error
+            });
+        });
+    };
+
+    // create a promise function that will process an array of records
+    let batchRemove = function(doneArray, remaining) {
+        return new Promise(function(resolve, reject) {
+
+            // if no more records to process...
+            if(remaining === 0) {
+                // resolve the promise...
+                resolve(doneArray);
+            }
+            // if there are records to process...
+            else {
+                // get the shortName value from doneArray
+                let index = remaining - 1;
+                let shortName = doneArray[index];
+
+                // remove this record...
+                removeOne(shortName).then(function (resp) {
+                    // resolve this instance of the batchRemove promise, but start a new one with one less counter...
+                    resolve(batchRemove(doneArray, remaining - 1));
+                });
+            }
+        });
+
+    };
+
+    // execute the sequence
+    batchRemove(doneArray, remaining).then(function(doneArray) {
+        // and output the http response
+        res.send({
+            status: 'Completed',
+            data: doneArray
+        });
     });
 
 };
 
 exports.doneTask = function(req, res, next) {
 
+    List.update({ hash: req.params.short }, { done: req.body.done }).then(function(resp) {
 
+        res.send({
+            status: 'Updated',
+            short: req.params.short,
+            done: req.body.done,
+            message: resp
+        });
+        next();
+
+    }).catch(function(err) {
+        res.send(err);
+        next();
+    });
 
 };

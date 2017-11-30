@@ -25,39 +25,53 @@ export default class Todo extends Component {
 		this.refreshList();
 	}
 
-
-
 	// get updated task list and setState tasks property
 	refreshList() {
 		axios.get('http://localhost:8080/').then(res => {
+
+			let doneArray = [];
+
+			for(let n=0; n<res.data.length; n++) {
+				if(res.data[n].done === true) {
+					doneArray.push(res.data[n].short);
+				}
+			}
+
 			this.setState({
+				doneArray: doneArray,
+				newTask: '',
 				tasks: res.data
 			});
 		});
 	}
 
 	handleChange = (event) => {
-		this.setState({ newTask: event.target.value });
+		this.setState({ newTask: event.target.value  });
 	};
 
 	handleCheckbox = (event) => {
 
-		console.log('Short-name: '+ event.name + ', Done: '+event.value);
+		let url = 'http://localhost:8080/task/'+encodeURI(event.target.name)+'/done';
 
-		let url = 'http://localhost:8080/'+encodeURI(event.target.name)+'/done';
-		console.log('Url: '+url);
-		/*
-
-
-		axios.post('http://localhost:8080/task/done', {
-			short: this.event.target.name,
-			done: this.event.target.value
+		axios.post(url, {
+			done: event.target.checked
 		}).then((response) => {
 			this.refreshList();
 		}).catch((err) => {
 			// handle error
 
-		});*/
+		});
+	};
+
+	handleClear = (event) => {
+
+		axios.post('http://localhost:8080/task/clear', {
+			doneArray: this.state.doneArray
+		}).then((response) => {
+			this.refreshList();
+		}).catch(function(err) {
+			// handle error
+		});
 	};
 
 	handleSubmit = (event) => {
@@ -70,6 +84,7 @@ export default class Todo extends Component {
 		}).catch(function(err) {
 			// handle error
 		});
+
 	};
 
 	render({}, { tasks, etc  }) {
@@ -81,14 +96,15 @@ export default class Todo extends Component {
 					<p>This is the To-Do List:</p>
 					<ul>
 						{tasks.map((task, index) => {
-							return <li><input type="checkbox" value={task.done} onClick={this.handleCheckbox} />
-								{task.short}</li>
+							return <li><input name={task.short} type="checkbox" checked={task.done} onClick={this.handleCheckbox} />
+								<span class={task.done ? style.done:""}>{task.short}</span></li>
 						})}
 					</ul>
 
 					<label>Add Task</label>
 					<input type="text" name="short" value={this.state.newTask} onChange={this.handleChange} />
 					<input type="submit" value="Add" />
+					<input type="button" value="Clear Completed" onClick={this.handleClear} />
 				</form>
 			</div>
 		);
