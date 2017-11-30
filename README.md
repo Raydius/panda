@@ -29,13 +29,11 @@ Be sure to set the following environment variables if you have not already -- th
 ```
 AWS_ACCESS_KEY_ID,
 AWS_SECRET_ACCESS_KEY
-
 ```
 
 **2. Run docker-compose:**
 ```
 docker-compose up
-
 ```
 
 **3. Connect:**
